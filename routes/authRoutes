@@ -1,0 +1,18 @@
+const passport = require("passport");
+
+/**
+ * exporint the route handlers
+ */
+module.exports = (app) => {
+  //route handler for a get request to pass authentication to passport.
+  // it asks for their profile and email info.
+  app.get(
+    "/auth/google",
+    passport.authenticate("google", {
+      scope: ["profile", "email"],
+    })
+  );
+
+  //route handler that handles the redirect after selecting the gmail account to use.  It uses the code to get user info
+  app.get("/auth/google/callback", passport.authenticate("google"));
+};
