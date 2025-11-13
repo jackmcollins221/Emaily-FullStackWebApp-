@@ -1,5 +1,7 @@
 const express = require("express");
 const mongoose = require('mongoose');
+const cookieSession = require('cookie-session');
+const passport= require('passport');
 //handles connecting to mongodb by importing key and then passing to mongoose
 const keys = require('./config/keys');
 require('./models/User')//tells the main thread to run that file once to setup the model, THIS HAS TO COME BEFORE BELOW PASSPORT IMPORT, bc passport refrences the schema made here
@@ -11,6 +13,16 @@ mongoose.connect(keys.mongoURI);
 
 
 const app = express(); //calling this like a function represents a new express app.  Can have multiple in a node project, but rare
+
+//tell express to use cookies in this app
+app.use(
+    cookieSession({
+        maxAge: 30*24*60*60*1000, //30 day til cookie expires
+        keys: [keys.cookieKey], // a key to use for the cookie not sure what it does?
+    })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 require("./routes/authRoutes")(app); // this passes app to authroutes, it works because when we say require(file) in this case
 //it just returns a function (look at authroutes export) and then we immediately pass it app so it can use it

@@ -15,4 +15,22 @@ module.exports = (app) => {
 
   //route handler that handles the redirect after selecting the gmail account to use.  It uses the code to get user info
   app.get("/auth/google/callback", passport.authenticate("google"));
+
+  /**
+   * Route to handle logout request
+   */
+  app.get('/api/logout', (req, res)=>{
+    req.logout();//function from passport to logout.
+    res.send(req.user);
+  })
+
+  /**
+   * Remember arrow function here is ran whenever anyone sends a get request to specified path
+   */
+  app.get('/api/current_user', (req, res)=>{
+    //res.send(req.session); //comment this line to see info about session, req.session is the data passport tries to keep in the cookie
+    res.send(req.user);
+  });
+
+ 
 };
