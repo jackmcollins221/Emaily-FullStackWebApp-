@@ -28,7 +28,8 @@ passport.use(
     {
       clientID: keys.googleClientID,
       clientSecret: keys.googleClientSecret,
-      callbackURL: "/auth/google/callback",
+      callbackURL: "/auth/google/callback", //this was relative at some point and it caused problems with oauth because it became http
+      proxy: true
     },
     (accessToken, refreshToken, profile, done) => {
       //this function is called whenver a user is redireted back to my project
